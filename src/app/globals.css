@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Billion Dreams';
+  src: url('/fonts/BillionDreams.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #161d26;
+  --twh-gold: #f1b53b;
+  --twh-dark: #161d26;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-twh-gold: #f1b53b;
+  --color-twh-dark: #161d26;
+  --color-twh-gold-light: #f5c96a;
+  --color-twh-dark-light: #2a3444;
+  --font-sans: 'Oswald', Arial, Helvetica, sans-serif;
+  --font-heading: 'Kardust Expanded', 'Oswald', sans-serif;
+  --font-script: 'Billion Dreams', cursive;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Oswald', Arial, Helvetica, sans-serif;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--twh-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--twh-gold);
+  border-radius: 4px;
+}
