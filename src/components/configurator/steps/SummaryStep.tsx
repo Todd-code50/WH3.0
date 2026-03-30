@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { type BuildState, formatPrice } from "../bikeData";
+import { type BuildState, formatPrice, calcFinishingTotal } from "../bikeData";
 
 interface Props {
   build: BuildState;
@@ -18,7 +18,10 @@ interface LineItem {
 }
 
 export default function SummaryStep({ build, total, onReset }: Props) {
-  const lineItems: LineItem[] = [
+  const { finishing } = build;
+
+  // ── Core line items ──────────────────────────────────────────────────────────
+  const coreItems: LineItem[] = [
     {
       label: "Frame",
       value: `${build.frame?.brand} ${build.frame?.model}`,
@@ -49,13 +52,54 @@ export default function SummaryStep({ build, total, onReset }: Props) {
       price: build.tyres?.price ?? 0,
       sub: build.tyres?.specs,
     },
-    {
-      label: "Finishing Kit",
-      value: `${build.finishing?.brand} ${build.finishing?.name}`,
-      price: build.finishing?.price ?? 0,
-      sub: build.finishing?.specs,
-    },
   ];
+
+  // ── Finishing line items (only show if selected) ─────────────────────────────
+  const finishingItems: LineItem[] = [];
+
+  if (finishing.barStem) {
+    finishingItems.push({
+      label: "Bar / Stem",
+      value: `${finishing.barStem.item.brand} ${finishing.barStem.item.name}`,
+      price: finishing.barStem.item.price,
+      sub: `Bar: ${finishing.barStem.barWidth} | Stem: ${finishing.barStem.stemLength}`,
+    });
+  }
+  if (finishing.saddle) {
+    finishingItems.push({
+      label: "Saddle",
+      value: `${finishing.saddle.brand} ${finishing.saddle.name}`,
+      price: finishing.saddle.price,
+      sub: finishing.saddle.specs,
+    });
+  }
+  if (finishing.barTape) {
+    finishingItems.push({
+      label: "Bar Tape",
+      value: `${finishing.barTape.brand} ${finishing.barTape.name}`,
+      price: finishing.barTape.price,
+      sub: finishing.barTape.specs,
+    });
+  }
+  if (finishing.cages) {
+    finishingItems.push({
+      label: "Cages",
+      value: `${finishing.cages.brand} ${finishing.cages.name}`,
+      price: finishing.cages.price,
+      sub: finishing.cages.specs,
+    });
+  }
+  finishing.extras.forEach((extra) => {
+    finishingItems.push({
+      label: "Extra",
+      value: `${extra.brand} ${extra.name}`,
+      price: extra.price,
+      sub: extra.specs,
+    });
+  });
+
+  const finishingTotal = calcFinishingTotal(finishing);
+  const hasFinishing = finishingItems.length > 0;
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -77,43 +121,25 @@ export default function SummaryStep({ build, total, onReset }: Props) {
             unoptimized
             priority
           />
-          {/* Gradient overlay — dark at bottom so text is readable */}
           <div className="absolute inset-0 bg-gradient-to-t from-twh-dark via-twh-dark/40 to-transparent" />
-
-          {/* Colour accent bar at very bottom of image */}
           {build.color && (
             <div
               className="absolute bottom-0 left-0 right-0 h-1"
               style={{ backgroundColor: build.color.hex }}
             />
           )}
-
-          {/* Frame name overlay */}
           <div className="absolute bottom-0 left-0 right-0 px-8 pb-8">
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              <p className="text-twh-gold text-xs tracking-widest uppercase mb-1">
-                {build.frame.brand}
-              </p>
-              <h2 className="text-white text-4xl font-bold tracking-wide uppercase leading-tight">
-                {build.frame.model}
-              </h2>
+            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+              <p className="text-twh-gold text-xs tracking-widest uppercase mb-1">{build.frame.brand}</p>
+              <h2 className="text-white text-4xl font-bold tracking-wide uppercase leading-tight">{build.frame.model}</h2>
               {build.color && (
                 <div className="flex items-center gap-2 mt-2">
-                  <span
-                    className="inline-block w-3 h-3 rounded-full border border-white/30"
-                    style={{ backgroundColor: build.color.hex }}
-                  />
+                  <span className="inline-block w-3 h-3 rounded-full border border-white/30" style={{ backgroundColor: build.color.hex }} />
                   <span className="text-white/60 text-sm tracking-wide">{build.color.name}</span>
                 </div>
               )}
             </motion.div>
           </div>
-
-          {/* Build total badge — top right */}
           <div className="absolute top-6 right-6">
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
@@ -130,30 +156,22 @@ export default function SummaryStep({ build, total, onReset }: Props) {
 
       {/* ── BUILD DETAILS ────────────────────────────────────────── */}
       <div className="p-8">
-        {/* Section title */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="mb-6"
-        >
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="mb-6">
           <p className="text-white/40 text-xs tracking-widest uppercase mb-1">Complete Build Specification</p>
           <h3 className="text-white text-xl font-bold tracking-wide uppercase">Your Build</h3>
         </motion.div>
 
-        {/* Line items */}
+        {/* ── Core components ── */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="bg-twh-dark-light rounded-lg border border-white/10 overflow-hidden mb-6"
+          className="bg-twh-dark-light rounded-lg border border-white/10 overflow-hidden mb-4"
         >
-          {lineItems.map((item, i) => (
+          {coreItems.map((item, i) => (
             <div
               key={item.label}
-              className={`flex items-start justify-between p-5 ${
-                i < lineItems.length - 1 ? "border-b border-white/10" : ""
-              }`}
+              className={`flex items-start justify-between p-5 ${i < coreItems.length - 1 ? "border-b border-white/10" : ""}`}
             >
               <div className="flex-1">
                 <p className="text-white/40 text-[10px] tracking-widest uppercase mb-0.5">{item.label}</p>
@@ -165,8 +183,46 @@ export default function SummaryStep({ build, total, onReset }: Props) {
               </p>
             </div>
           ))}
+        </motion.div>
 
-          {/* Total */}
+        {/* ── Finishing kit section (only if any selected) ── */}
+        {hasFinishing && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.35 }}
+            className="bg-twh-dark-light rounded-lg border border-white/10 overflow-hidden mb-4"
+          >
+            <div className="px-5 py-3 border-b border-white/10 bg-twh-gold/5">
+              <p className="text-twh-gold text-[10px] tracking-widest uppercase font-semibold">Finishing Kit</p>
+            </div>
+            {finishingItems.map((item, i) => (
+              <div
+                key={`${item.label}-${i}`}
+                className={`flex items-start justify-between p-5 ${i < finishingItems.length - 1 ? "border-b border-white/10" : ""}`}
+              >
+                <div className="flex-1">
+                  <p className="text-white/40 text-[10px] tracking-widest uppercase mb-0.5">{item.label}</p>
+                  <p className="text-white font-semibold tracking-wide">{item.value}</p>
+                  {item.sub && <p className="text-white/30 text-xs mt-0.5">{item.sub}</p>}
+                </div>
+                <p className="text-white text-base font-bold ml-4 flex-shrink-0">{formatPrice(item.price)}</p>
+              </div>
+            ))}
+            <div className="flex items-center justify-between px-5 py-3 border-t border-white/10 bg-white/5">
+              <p className="text-white/40 text-xs tracking-widest uppercase">Finishing Subtotal</p>
+              <p className="text-white font-bold">{formatPrice(finishingTotal)}</p>
+            </div>
+          </motion.div>
+        )}
+
+        {/* ── Grand total ── */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="bg-twh-dark-light rounded-lg border border-white/10 overflow-hidden mb-6"
+        >
           <div className="flex items-center justify-between p-5 bg-twh-gold/10 border-t-2 border-twh-gold/30">
             <div>
               <p className="text-twh-gold text-xs tracking-widest uppercase font-semibold">Total Build Price</p>
@@ -176,11 +232,10 @@ export default function SummaryStep({ build, total, onReset }: Props) {
           </div>
         </motion.div>
 
-        {/* Note */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
+          transition={{ delay: 0.45 }}
           className="text-white/30 text-xs text-center mb-8 leading-relaxed"
         >
           Prices are indicative and subject to availability. Our team will confirm final pricing and lead times.
@@ -188,7 +243,6 @@ export default function SummaryStep({ build, total, onReset }: Props) {
           Build & labour costs are additional — ask our workshop team for a quote.
         </motion.p>
 
-        {/* Actions */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -204,7 +258,6 @@ export default function SummaryStep({ build, total, onReset }: Props) {
             </svg>
             Print Build Sheet
           </button>
-
           <a
             href="mailto:hello@thewheelhouse.com.au?subject=Bike Build Enquiry"
             className="flex-1 flex items-center justify-center gap-2 px-6 py-4 bg-twh-gold text-twh-dark text-sm font-bold tracking-widest uppercase hover:bg-twh-gold-light transition-all duration-300"
@@ -216,7 +269,6 @@ export default function SummaryStep({ build, total, onReset }: Props) {
           </a>
         </motion.div>
 
-        {/* Start over */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

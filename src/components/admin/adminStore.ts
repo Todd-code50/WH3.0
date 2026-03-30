@@ -3,7 +3,7 @@
 // The configurator reads from this store at runtime.
 
 import type { BikeFrame, ComponentOption } from "../configurator/bikeData";
-import { FRAMES, GROUPSETS, WHEELS, TYRES, FINISHING_KITS } from "../configurator/bikeData";
+import { FRAMES, GROUPSETS, WHEELS, TYRES, BAR_STEM_OPTIONS, SADDLE_OPTIONS, BAR_TAPE_OPTIONS, CAGE_OPTIONS, EXTRAS_OPTIONS } from "../configurator/bikeData";
 
 export type AdminSection = "frames" | "groupsets" | "wheels" | "tyres" | "finishing";
 
@@ -12,7 +12,7 @@ export interface AdminStore {
   groupsets: ComponentOption[];
   wheels: ComponentOption[];
   tyres: ComponentOption[];
-  finishing: ComponentOption[];
+  finishing: ComponentOption[]; // flat list for admin display (bar/stem shown without size fields)
 }
 
 const STORAGE_KEY = "twh_admin_data";
@@ -53,11 +53,19 @@ export function resetStore(): AdminStore {
 }
 
 function getDefaultStore(): AdminStore {
+  // Merge all finishing categories into a flat list for admin management
+  const allFinishing: ComponentOption[] = [
+    ...BAR_STEM_OPTIONS,
+    ...SADDLE_OPTIONS,
+    ...BAR_TAPE_OPTIONS,
+    ...CAGE_OPTIONS,
+    ...EXTRAS_OPTIONS,
+  ];
   return {
     frames: FRAMES,
     groupsets: GROUPSETS,
     wheels: WHEELS,
     tyres: TYRES,
-    finishing: FINISHING_KITS,
+    finishing: allFinishing,
   };
 }

@@ -7,14 +7,15 @@ import {
   GROUPSETS,
   WHEELS,
   TYRES,
-  FINISHING_KITS,
   CONFIG_STEPS,
   formatPrice,
   calcTotal,
+  EMPTY_FINISHING,
   type BuildState,
   type BikeFrame,
   type ColorOption,
   type ComponentOption,
+  type FinishingSelections,
 } from "./bikeData";
 import FrameStep from "./steps/FrameStep";
 import ColorStep from "./steps/ColorStep";
@@ -30,7 +31,7 @@ const EMPTY_BUILD: BuildState = {
   groupset: null,
   wheels: null,
   tyres: null,
-  finishing: null,
+  finishing: EMPTY_FINISHING,
 };
 
 export default function BikeConfigurator() {
@@ -41,26 +42,25 @@ export default function BikeConfigurator() {
   const stepId = CONFIG_STEPS[currentStep].id;
   const total = calcTotal(build);
 
-  // Determine which steps are "complete"
   const isStepComplete = (idx: number): boolean => {
     const id = CONFIG_STEPS[idx].id;
-    if (id === "frame") return !!build.frame;
-    if (id === "color") return !!build.color;
+    if (id === "frame")    return !!build.frame;
+    if (id === "color")    return !!build.color;
     if (id === "groupset") return !!build.groupset;
-    if (id === "wheels") return !!build.wheels;
-    if (id === "tyres") return !!build.tyres;
-    if (id === "finishing") return !!build.finishing;
-    if (id === "summary") return true;
+    if (id === "wheels")   return !!build.wheels;
+    if (id === "tyres")    return !!build.tyres;
+    if (id === "finishing") return true; // finishing is optional
+    if (id === "summary")  return true;
     return false;
   };
 
   const canAdvance = (): boolean => {
-    if (stepId === "frame") return !!build.frame;
-    if (stepId === "color") return !!build.color;
+    if (stepId === "frame")    return !!build.frame;
+    if (stepId === "color")    return !!build.color;
     if (stepId === "groupset") return !!build.groupset;
-    if (stepId === "wheels") return !!build.wheels;
-    if (stepId === "tyres") return !!build.tyres;
-    if (stepId === "finishing") return !!build.finishing;
+    if (stepId === "wheels")   return !!build.wheels;
+    if (stepId === "tyres")    return !!build.tyres;
+    if (stepId === "finishing") return true; // always can advance
     return false;
   };
 
@@ -207,9 +207,8 @@ export default function BikeConfigurator() {
             )}
             {stepId === "finishing" && (
               <FinishingStep
-                kits={FINISHING_KITS}
-                selected={build.finishing}
-                onSelect={(f: ComponentOption) => setBuild((b) => ({ ...b, finishing: f }))}
+                selections={build.finishing}
+                onChange={(finishing: FinishingSelections) => setBuild((b) => ({ ...b, finishing }))}
               />
             )}
             {stepId === "summary" && (

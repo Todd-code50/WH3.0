@@ -311,15 +311,22 @@ export const TYRES: ComponentOption[] = [
   },
 ];
 
-// ─── FINISHING KITS ───────────────────────────────────────────────────────────
-export const FINISHING_KITS: ComponentOption[] = [
+// ─── FINISHING — BAR / STEM ──────────────────────────────────────────────────
+export interface BarStemOption extends ComponentOption {
+  barWidths: string[];   // e.g. ["38cm","40cm","42cm","44cm"]
+  stemLengths: string[]; // e.g. ["90mm","100mm","110mm","120mm"]
+}
+
+export const BAR_STEM_OPTIONS: BarStemOption[] = [
   {
-    id: "enve-cockpit-pro",
+    id: "enve-ses-ar",
     name: "SES AR Bar/Stem Combo",
     brand: "ENVE",
     description: "Fully integrated aero cockpit. Internal cable routing, 3K carbon weave, and a fit range that works for every rider. Made in the USA.",
     price: 1200,
-    specs: "Integrated Bar/Stem | 31.8mm | 120-130mm stem",
+    specs: "Integrated Bar/Stem | 31.8mm clamp",
+    barWidths: ["38cm", "40cm", "42cm", "44cm"],
+    stemLengths: ["90mm", "100mm", "110mm", "120mm", "130mm"],
   },
   {
     id: "zipp-sl-speed",
@@ -327,8 +334,44 @@ export const FINISHING_KITS: ComponentOption[] = [
     brand: "Zipp",
     description: "Aero-optimized handlebar and stem combo. 3K carbon, internal routing, and a shape that reduces drag without sacrificing comfort.",
     price: 900,
-    specs: "Integrated Bar/Stem | 31.8mm | 100-130mm stem",
+    specs: "Integrated Bar/Stem | 31.8mm clamp",
+    barWidths: ["38cm", "40cm", "42cm", "44cm"],
+    stemLengths: ["80mm", "90mm", "100mm", "110mm", "120mm"],
   },
+  {
+    id: "pro-vibe-superlight",
+    name: "Vibe Superlight Carbon",
+    brand: "PRO",
+    description: "Shimano's premium cockpit brand. Superlight carbon bar and stem, internal routing, and a classic round bar shape.",
+    price: 650,
+    specs: "Separate Bar/Stem | 31.8mm clamp",
+    barWidths: ["38cm", "40cm", "42cm", "44cm"],
+    stemLengths: ["80mm", "90mm", "100mm", "110mm", "120mm"],
+  },
+  {
+    id: "ritchey-wcs-carbon",
+    name: "WCS Carbon Evo Curve",
+    brand: "Ritchey",
+    description: "Trusted by pros for decades. Toray carbon, classic compact drop, and a reliability record that speaks for itself.",
+    price: 480,
+    specs: "Separate Bar/Stem | 31.8mm clamp",
+    barWidths: ["38cm", "40cm", "42cm", "44cm"],
+    stemLengths: ["80mm", "90mm", "100mm", "110mm"],
+  },
+  {
+    id: "deda-elementi-superleggera",
+    name: "Superleggera DCR",
+    brand: "Deda Elementi",
+    description: "Italian carbon cockpit with internal cable routing. Lightweight, stiff, and beautifully finished for the discerning rider.",
+    price: 750,
+    specs: "Integrated Bar/Stem | 31.8mm clamp",
+    barWidths: ["38cm", "40cm", "42cm", "44cm"],
+    stemLengths: ["90mm", "100mm", "110mm", "120mm"],
+  },
+];
+
+// ─── FINISHING — SADDLE ───────────────────────────────────────────────────────
+export const SADDLE_OPTIONS: ComponentOption[] = [
   {
     id: "fizik-antares-r1",
     name: "Antares R1 Adaptive",
@@ -346,22 +389,195 @@ export const FINISHING_KITS: ComponentOption[] = [
     specs: "Carbon Rail | 145mm width | 145g",
   },
   {
-    id: "pro-vibe-superlight",
-    name: "Vibe Superlight Carbon",
-    brand: "PRO",
-    description: "Shimano's premium cockpit brand. Superlight carbon bar and stem, internal routing, and a classic round bar shape.",
-    price: 650,
-    specs: "Separate Bar/Stem | 31.8mm | 100-120mm stem",
+    id: "specialized-power-mirror",
+    name: "Power Mirror",
+    brand: "Specialized",
+    description: "Engineered with Body Geometry science. Mirror foam adapts to your sit bones for all-day comfort in an aggressive position.",
+    price: 320,
+    specs: "Carbon Rail | 143/155mm width | 168g",
   },
   {
-    id: "ritchey-wcs-carbon",
-    name: "WCS Carbon Evo Curve",
-    brand: "Ritchey",
-    description: "Trusted by pros for decades. Toray carbon, classic compact drop, and a reliability record that speaks for itself.",
-    price: 480,
-    specs: "Separate Bar/Stem | 31.8mm | 100-120mm stem",
+    id: "smp-composit",
+    name: "Composit",
+    brand: "SMP",
+    description: "The iconic Italian saddle with a central cutout that relieves pressure on soft tissue. Loved by riders who spend long hours in the saddle.",
+    price: 280,
+    specs: "Carbon Rail | 130mm width | 185g",
+  },
+  {
+    id: "prologo-dimension-ndr",
+    name: "Dimension NDR",
+    brand: "Prologo",
+    description: "Nack technology for superior grip and comfort. Tirox rail, compact shape, and a price point that makes premium accessible.",
+    price: 240,
+    specs: "Tirox Rail | 143mm width | 210g",
   },
 ];
+
+// ─── FINISHING — BAR TAPE ─────────────────────────────────────────────────────
+export const BAR_TAPE_OPTIONS: ComponentOption[] = [
+  {
+    id: "fizik-vento-microtex",
+    name: "Vento Microtex Tacky",
+    brand: "Fizik",
+    description: "Ultra-thin 2mm tape with a tacky surface for maximum grip. The choice of WorldTour professionals.",
+    price: 45,
+    specs: "2mm | Microtex | Multiple colours",
+  },
+  {
+    id: "supacaz-super-sticky-kush",
+    name: "Super Sticky Kush",
+    brand: "Supacaz",
+    description: "Bold colours, premium feel. Galaxy-print or solid options with a 3.5mm cushioned feel that absorbs road vibration.",
+    price: 55,
+    specs: "3.5mm | Silicone gel | Multiple colours",
+  },
+  {
+    id: "lizardskins-dsp",
+    name: "DSP 3.2mm",
+    brand: "Lizard Skins",
+    description: "Durasoft Polymer construction. Exceptional grip in wet and dry conditions, and a durability that outlasts the competition.",
+    price: 40,
+    specs: "3.2mm | DSP | Multiple colours",
+  },
+  {
+    id: "cinelli-cork",
+    name: "Cork Ribbon",
+    brand: "Cinelli",
+    description: "The classic. Natural cork feel, excellent vibration damping, and a timeless look that suits any build.",
+    price: 25,
+    specs: "2.5mm | Cork | Multiple colours",
+  },
+  {
+    id: "pro-gravel-tape",
+    name: "Gravel Comfort Tape",
+    brand: "PRO",
+    description: "Extra thick 4mm tape designed for long days in the saddle. Perfect for endurance and gravel builds.",
+    price: 35,
+    specs: "4mm | EVA foam | Multiple colours",
+  },
+];
+
+// ─── FINISHING — CAGES ────────────────────────────────────────────────────────
+export const CAGE_OPTIONS: ComponentOption[] = [
+  {
+    id: "elite-custom-race",
+    name: "Custom Race",
+    brand: "Elite",
+    description: "Lightweight polycarbonate cage with a secure hold and easy release. The standard choice for road racing.",
+    price: 35,
+    specs: "Polycarbonate | 28g | Side entry",
+  },
+  {
+    id: "arundel-mandible",
+    name: "Mandible Cage",
+    brand: "Arundel",
+    description: "Carbon fibre cage with a unique mandible design that grips bottles securely even on rough roads.",
+    price: 75,
+    specs: "Carbon | 18g | Side entry",
+  },
+  {
+    id: "tacx-deva",
+    name: "Deva Carbon",
+    brand: "Tacx",
+    description: "Woven carbon construction, minimal weight, and a secure hold that works with any bottle shape.",
+    price: 65,
+    specs: "Carbon | 22g | Top/side entry",
+  },
+  {
+    id: "king-cage-titanium",
+    name: "Titanium Cage",
+    brand: "King Cage",
+    description: "Hand-bent titanium wire cage. Virtually indestructible, beautifully simple, and made in the USA.",
+    price: 55,
+    specs: "Titanium | 32g | Side entry",
+  },
+];
+
+// ─── FINISHING — EXTRAS ───────────────────────────────────────────────────────
+export const EXTRAS_OPTIONS: ComponentOption[] = [
+  {
+    id: "garmin-edge-840",
+    name: "Edge 840 Solar",
+    brand: "Garmin",
+    description: "GPS cycling computer with solar charging, ClimbPro, and full navigation. The benchmark for road cycling computers.",
+    price: 650,
+    specs: "GPS | Solar charging | 3.5\" touchscreen",
+  },
+  {
+    id: "wahoo-elemnt-roam",
+    name: "ELEMNT ROAM V2",
+    brand: "Wahoo",
+    description: "Clean interface, turn-by-turn navigation, and seamless integration with Strava, TrainingPeaks, and Zwift.",
+    price: 480,
+    specs: "GPS | 3.7\" colour display | 17hr battery",
+  },
+  {
+    id: "sram-axs-power-meter",
+    name: "Quarq DZero Power Meter",
+    brand: "SRAM",
+    description: "Dual-sided power measurement integrated into the crank spider. Accurate to ±1.5% and compatible with all SRAM groupsets.",
+    price: 750,
+    specs: "Dual-sided | ±1.5% accuracy | ANT+/BLE",
+  },
+  {
+    id: "shimano-pd-r9100",
+    name: "PD-R9100 Dura-Ace Pedals",
+    brand: "Shimano",
+    description: "The lightest Shimano road pedal. Titanium axle, carbon composite body, and a large platform for efficient power transfer.",
+    price: 320,
+    specs: "Titanium axle | 228g/pair | SPD-SL",
+  },
+  {
+    id: "speedplay-zero",
+    name: "Zero Stainless Pedals",
+    brand: "Speedplay",
+    description: "Dual-sided entry, adjustable float, and the lowest stack height in road cycling. Loved by riders with knee issues.",
+    price: 260,
+    specs: "Stainless | 230g/pair | Dual-sided entry",
+  },
+  {
+    id: "silca-pump",
+    name: "SuperPista Ultimate Floor Pump",
+    brand: "Silca",
+    description: "The finest floor pump ever made. Machined aluminium, Italian craftsmanship, and a gauge accurate to ±0.5 PSI.",
+    price: 220,
+    specs: "Max 220 PSI | Dual chuck | Made in USA",
+  },
+];
+
+// ─── FINISHING SELECTION STATE ────────────────────────────────────────────────
+export interface BarStemSelection {
+  item: BarStemOption;
+  barWidth: string;
+  stemLength: string;
+}
+
+export interface FinishingSelections {
+  barStem: BarStemSelection | null;
+  saddle: ComponentOption | null;
+  barTape: ComponentOption | null;
+  cages: ComponentOption | null;   // one cage option (qty handled at checkout)
+  extras: ComponentOption[];       // multiple extras allowed
+}
+
+export const EMPTY_FINISHING: FinishingSelections = {
+  barStem: null,
+  saddle: null,
+  barTape: null,
+  cages: null,
+  extras: [],
+};
+
+export function calcFinishingTotal(f: FinishingSelections): number {
+  return (
+    (f.barStem?.item.price ?? 0) +
+    (f.saddle?.price ?? 0) +
+    (f.barTape?.price ?? 0) +
+    (f.cages?.price ?? 0) +
+    f.extras.reduce((sum, e) => sum + e.price, 0)
+  );
+}
 
 // ─── HELPERS ──────────────────────────────────────────────────────────────────
 export function formatPrice(price: number): string {
@@ -379,7 +595,7 @@ export type BuildState = {
   groupset: ComponentOption | null;
   wheels: ComponentOption | null;
   tyres: ComponentOption | null;
-  finishing: ComponentOption | null;
+  finishing: FinishingSelections;
 };
 
 export function calcTotal(build: BuildState): number {
@@ -389,6 +605,6 @@ export function calcTotal(build: BuildState): number {
     (build.groupset?.price ?? 0) +
     (build.wheels?.price ?? 0) +
     (build.tyres?.price ?? 0) +
-    (build.finishing?.price ?? 0)
+    calcFinishingTotal(build.finishing)
   );
 }
