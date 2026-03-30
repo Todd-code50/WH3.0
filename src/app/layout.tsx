@@ -1,8 +1,10 @@
-import type { Metadata } from "next";
+"use client";
+
 import { Oswald } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { usePathname } from "next/navigation";
 
 const oswald = Oswald({
   variable: "--font-oswald",
@@ -10,23 +12,20 @@ const oswald = Oswald({
   weight: ["200", "300", "400", "500", "600", "700"],
 });
 
-export const metadata: Metadata = {
-  title: "The Wheelhouse | Bikes + Workshop + Coffee",
-  description:
-    "The Wheelhouse — your destination for premium bikes, expert workshop services, and great coffee.",
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+  const isConfigurator = pathname?.startsWith("/configure");
+
   return (
     <html lang="en">
       <body className={`${oswald.variable} antialiased`}>
-        <Navbar />
+        {!isConfigurator && <Navbar />}
         <main>{children}</main>
-        <Footer />
+        {!isConfigurator && <Footer />}
       </body>
     </html>
   );
