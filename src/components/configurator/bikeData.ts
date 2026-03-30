@@ -29,7 +29,6 @@ export interface BikeFrame {
   colors: ColorOption[];
   material: string;
   weight: string;
-  sizes: string[];
 }
 
 export interface ConfigStep {
@@ -61,7 +60,6 @@ export const FRAMES: BikeFrame[] = [
     image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80",
     material: "FACT 12r Carbon",
     weight: "6.8 kg (complete)",
-    sizes: ["44", "49", "52", "54", "56", "58", "61"],
     colors: [
       { id: "gloss-black", name: "Gloss Black", hex: "#1a1a1a", price: 0 },
       { id: "white-silver", name: "White / Silver", hex: "#e8e8e8", price: 0 },
@@ -80,7 +78,6 @@ export const FRAMES: BikeFrame[] = [
     image: "https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=800&q=80",
     material: "High-Modulus Carbon",
     weight: "6.6 kg (complete)",
-    sizes: ["48", "51", "54", "56", "58"],
     colors: [
       { id: "black-red", name: "Black / Red", hex: "#1a1a1a", price: 0 },
       { id: "white-red", name: "White / Red", hex: "#f5f5f5", price: 0 },
@@ -98,7 +95,6 @@ export const FRAMES: BikeFrame[] = [
     image: "https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?w=800&q=80",
     material: "OCLV 800 Carbon",
     weight: "6.5 kg (complete)",
-    sizes: ["47", "50", "52", "54", "56", "58", "60", "62"],
     colors: [
       { id: "matte-black", name: "Matte Black", hex: "#2c2c2c", price: 0 },
       { id: "radioactive-yellow", name: "Radioactive Yellow", hex: "#d4e600", price: 0 },
@@ -117,7 +113,6 @@ export const FRAMES: BikeFrame[] = [
     image: "https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=800&q=80",
     material: "Toray T1000 Carbon",
     weight: "7.0 kg (complete)",
-    sizes: ["47", "50", "53", "55", "57"],
     colors: [
       { id: "nero-opaco", name: "Nero Opaco", hex: "#1c1c1c", price: 0 },
       { id: "bianco-perla", name: "Bianco Perla", hex: "#f8f4ee", price: 0 },
@@ -136,7 +131,6 @@ export const FRAMES: BikeFrame[] = [
     image: "https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=800&q=80",
     material: "CFR Carbon",
     weight: "7.2 kg (complete)",
-    sizes: ["2XS", "XS", "S", "M", "L", "XL"],
     colors: [
       { id: "stealth", name: "Stealth Black", hex: "#111111", price: 0 },
       { id: "white-aero", name: "White Aero", hex: "#eeeeee", price: 0 },
@@ -153,7 +147,6 @@ export const FRAMES: BikeFrame[] = [
     image: "https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=800&q=80",
     material: "Carbon Fiber",
     weight: "8.4 kg (complete)",
-    sizes: ["49", "52", "54", "56", "58", "61"],
     colors: [
       { id: "dusty-blue", name: "Dusty Blue", hex: "#5b7fa6", price: 0 },
       { id: "burnt-orange", name: "Burnt Orange", hex: "#c45e1a", price: 0 },
@@ -387,7 +380,6 @@ export type BuildState = {
   wheels: ComponentOption | null;
   tyres: ComponentOption | null;
   finishing: ComponentOption | null;
-  size: string | null;
 };
 
 export function calcTotal(build: BuildState): number {

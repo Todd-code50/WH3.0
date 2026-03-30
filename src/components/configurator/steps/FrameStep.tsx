@@ -7,18 +7,10 @@ import { type BikeFrame, formatPrice } from "../bikeData";
 interface Props {
   frames: BikeFrame[];
   selected: BikeFrame | null;
-  selectedSize: string | null;
   onSelect: (frame: BikeFrame) => void;
-  onSelectSize: (size: string) => void;
 }
 
-const CATEGORIES = ["All", "Road", "Gravel", "MTB"];
-
-export default function FrameStep({ frames, selected, selectedSize, onSelect, onSelectSize }: Props) {
-  const categories = CATEGORIES.filter(
-    (c) => c === "All" || frames.some((f) => f.category === c)
-  );
-
+export default function FrameStep({ frames, selected, onSelect }: Props) {
   return (
     <div className="p-8">
       {/* Header */}
@@ -88,40 +80,6 @@ export default function FrameStep({ frames, selected, selectedSize, onSelect, on
           );
         })}
       </div>
-
-      {/* Size Selector */}
-      {selected && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mt-8 p-6 bg-twh-dark-light rounded-lg border border-twh-gold/20"
-        >
-          <h3 className="text-white text-sm font-bold tracking-widest uppercase mb-1">Select Size</h3>
-          <p className="text-white/40 text-xs mb-4">
-            {selected.brand} {selected.model} — Available sizes
-          </p>
-          <div className="flex flex-wrap gap-3">
-            {selected.sizes.map((size) => (
-              <button
-                key={size}
-                onClick={() => onSelectSize(size)}
-                className={`w-14 h-14 rounded-lg border-2 text-sm font-bold tracking-wide transition-all duration-200 ${
-                  selectedSize === size
-                    ? "border-twh-gold bg-twh-gold text-twh-dark"
-                    : "border-white/20 text-white/60 hover:border-white/50 hover:text-white"
-                }`}
-              >
-                {size}
-              </button>
-            ))}
-          </div>
-          {!selectedSize && (
-            <p className="text-twh-gold/60 text-xs mt-3 tracking-wide">
-              ↑ Please select a size to continue
-            </p>
-          )}
-        </motion.div>
-      )}
     </div>
   );
 }

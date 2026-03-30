@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FRAMES,
@@ -31,7 +31,6 @@ const EMPTY_BUILD: BuildState = {
   wheels: null,
   tyres: null,
   finishing: null,
-  size: null,
 };
 
 export default function BikeConfigurator() {
@@ -56,7 +55,7 @@ export default function BikeConfigurator() {
   };
 
   const canAdvance = (): boolean => {
-    if (stepId === "frame") return !!build.frame && !!build.size;
+    if (stepId === "frame") return !!build.frame;
     if (stepId === "color") return !!build.color;
     if (stepId === "groupset") return !!build.groupset;
     if (stepId === "wheels") return !!build.wheels;
@@ -175,9 +174,7 @@ export default function BikeConfigurator() {
               <FrameStep
                 frames={FRAMES}
                 selected={build.frame}
-                selectedSize={build.size}
-                onSelect={(frame: BikeFrame) => setBuild((b) => ({ ...b, frame, color: null, size: b.size }))}
-                onSelectSize={(size: string) => setBuild((b) => ({ ...b, size }))}
+                onSelect={(frame: BikeFrame) => setBuild((b) => ({ ...b, frame, color: null }))}
               />
             )}
             {stepId === "color" && build.frame && (

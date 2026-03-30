@@ -19,13 +19,15 @@ export default function RootLayout({
 }>) {
   const pathname = usePathname();
   const isConfigurator = pathname?.startsWith("/configure");
+  const isAdmin = pathname?.startsWith("/admin");
+  const hideChrome = isConfigurator || isAdmin;
 
   return (
     <html lang="en">
       <body className={`${oswald.variable} antialiased`}>
-        {!isConfigurator && <Navbar />}
+        {!hideChrome && <Navbar />}
         <main>{children}</main>
-        {!isConfigurator && <Footer />}
+        {!hideChrome && <Footer />}
       </body>
     </html>
   );
