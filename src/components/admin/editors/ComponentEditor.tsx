@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { ComponentOption } from "../../configurator/bikeData";
 import type { AdminSection } from "../adminStore";
+import ImageInput from "../ImageInput";
 
 interface Props {
   section: AdminSection;
@@ -26,6 +27,7 @@ const BLANK: ComponentOption = {
   description: "",
   price: 0,
   specs: "",
+  image: "",
 };
 
 export default function ComponentEditor({ section, items, onChange }: Props) {
@@ -225,6 +227,11 @@ export default function ComponentEditor({ section, items, onChange }: Props) {
                   />
                 </div>
                 {field("Specs / Details", "specs", "text", "e.g. 12-speed | 50/34T | Di2 Electronic")}
+                <ImageInput
+                  label="Image (optional)"
+                  value={editing.image ?? ""}
+                  onChange={(val) => setEditing({ ...editing, image: val })}
+                />
               </div>
 
               {/* Modal footer */}

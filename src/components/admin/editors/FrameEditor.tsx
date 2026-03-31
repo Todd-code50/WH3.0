@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { BikeFrame, ColorOption } from "../../configurator/bikeData";
+import ImageInput from "../ImageInput";
 
 interface Props {
   frames: BikeFrame[];
@@ -249,22 +250,11 @@ export default function FrameEditor({ frames, onChange }: Props) {
                     className="w-full bg-twh-dark border border-white/15 rounded-lg px-3 py-2.5 text-white text-sm placeholder-white/20 outline-none focus:border-twh-gold transition-colors duration-200 resize-none"
                   />
                 </div>
-                <div>
-                  <label className="block text-white/40 text-[10px] tracking-widest uppercase mb-1">Image URL</label>
-                  <input
-                    type="url"
-                    value={editing.image}
-                    onChange={(e) => setEditing({ ...editing, image: e.target.value })}
-                    placeholder="https://..."
-                    className="w-full bg-twh-dark border border-white/15 rounded-lg px-3 py-2.5 text-white text-sm placeholder-white/20 outline-none focus:border-twh-gold transition-colors duration-200"
-                  />
-                  {editing.image && (
-                    <div className="mt-2 h-24 rounded-lg overflow-hidden bg-white/5">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={editing.image} alt="Preview" className="w-full h-full object-cover" />
-                    </div>
-                  )}
-                </div>
+                <ImageInput
+                  label="Image"
+                  value={editing.image}
+                  onChange={(val) => setEditing({ ...editing, image: val })}
+                />
 
                 {/* Colours section */}
                 <div className="border-t border-white/10 pt-4">
