@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FRAMES,
@@ -17,6 +17,7 @@ import {
   type ComponentOption,
   type FinishingSelections,
 } from "./bikeData";
+import { loadStore } from "../admin/adminStore";
 import FrameStep from "./steps/FrameStep";
 import ColorStep from "./steps/ColorStep";
 import GroupsetStep from "./steps/GroupsetStep";
@@ -38,6 +39,21 @@ export default function BikeConfigurator() {
   const [currentStep, setCurrentStep] = useState(0);
   const [build, setBuild] = useState<BuildState>(EMPTY_BUILD);
   const [direction, setDirection] = useState<1 | -1>(1);
+
+  // ── Live data from admin store (localStorage) ──────────────────────────────
+  const [frames, setFrames] = useState<BikeFrame[]>(FRAMES);
+  const [groupsets, setGroupsets] = useState<ComponentOption[]>(GROUPSETS);
+  const [wheels, setWheels] = useState<ComponentOption[]>(WHEELS);
+  const [tyres, setTyres] = useState<ComponentOption[]>(TYRES);
+
+  // Load admin-managed data on mount (client-side only)
+  useEffect(() => {
+    const store = loadStore();
+    if (store.frames?.length)    setFrames(store.frames);
+    if (store.groupsets?.length) setGroupsets(store.groupsets);
+    if (store.wheels?.length)    setWheels(store.wheels);
+    if (store.tyres?.length)     setTyres(store.tyres);
+  }, []);
 
   const stepId = CONFIG_STEPS[currentStep].id;
   const total = calcTotal(build);
@@ -172,7 +188,7 @@ export default function BikeConfigurator() {
           >
             {stepId === "frame" && (
               <FrameStep
-                frames={FRAMES}
+                frames={frames}
                 selected={build.frame}
                 onSelect={(frame: BikeFrame) => setBuild((b) => ({ ...b, frame, color: null }))}
               />
@@ -186,21 +202,21 @@ export default function BikeConfigurator() {
             )}
             {stepId === "groupset" && (
               <GroupsetStep
-                groupsets={GROUPSETS}
+                groupsets={groupsets}
                 selected={build.groupset}
                 onSelect={(g: ComponentOption) => setBuild((b) => ({ ...b, groupset: g }))}
               />
             )}
             {stepId === "wheels" && (
               <WheelsStep
-                wheels={WHEELS}
+                wheels={wheels}
                 selected={build.wheels}
                 onSelect={(w: ComponentOption) => setBuild((b) => ({ ...b, wheels: w }))}
               />
             )}
             {stepId === "tyres" && (
               <TyresStep
-                tyres={TYRES}
+                tyres={tyres}
                 selected={build.tyres}
                 onSelect={(t: ComponentOption) => setBuild((b) => ({ ...b, tyres: t }))}
               />
